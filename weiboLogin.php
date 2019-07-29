@@ -1,10 +1,28 @@
 <?php
+  
+  /**
+    设置cookie文件
+  */
 
-  if (!is_file('./wbcookie.php')) {
-    CookieSet('SUB;','0');
+  function CookieSet($cookie,$time){
+    $newConfig = '<?php 
+    $config = array(
+      "cookie" => "'.$cookie.'",
+      "time" => "'.$time.'",
+    );';
+    @file_put_contents('wbcookie.php', $newConfig);
   }
 
-  include './wbcookie.php';
+
+   if (!is_file('wbcookie.php')) {
+     CookieSet('SUB;','0');
+     require 'wbcookie.php';
+   }
+   else{
+    require 'wbcookie.php';
+   }
+
+  
   require_once './weiboAccount.php';
 
   if (time() - $config['time'] >20*3600||$config['cookie']=='SUB;') {
@@ -18,7 +36,7 @@
       return error('203','获取cookie出现错误，请检查账号状态或者重新获取cookie');
     }
   }
-
+  
   /**
        * 新浪微博登录(无加密接口版本)
        * @param  string $u 用户名
@@ -43,7 +61,7 @@
     $loginData['domain'] = 'sina.com.cn';
     $loginData['prelt'] = '0';
     $loginData['returntype'] = 'TEXT';
-    return loginPost($loginUrl,$loginData);
+    return loginPost($loginUrl,$loginData); 
   }
 
   /**
@@ -63,8 +81,8 @@
       $post = $data;
     }
     $ch = curl_init();
-    curl_setopt($ch,CURLOPT_URL,$url);
-    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_URL,$url); 
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1); 
     curl_setopt($ch,CURLOPT_HEADER,1);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -88,19 +106,6 @@
   }
 
   /**
-    设置cookie文件
-  */
-
-  function CookieSet($cookie,$time){
-    $newConfig = '<?php
-    $config = array(
-      "cookie" => "'.$cookie.'",
-      "time" => "'.$time.'",
-    );';
-    @file_put_contents('./wbcookie.php', $newConfig);
-  }
-
-  /**
     错误反馈
   */
 
@@ -108,4 +113,4 @@
     $arr = array('code'=>$code,'msg'=>$msg);
     echo json_encode($arr);
   }
-
+  

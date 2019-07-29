@@ -108,25 +108,25 @@ function jinrishici(){
     $context = stream_context_create($opts);
     // Open the file using the HTTP headers set above
     $tangshi_pailie = json_decode(file_get_contents('https://v2.jinrishici.com/one.json', false, $context),true);          //今日诗词API，带token版本
-
+   
     // $tangshi_pailie = json_decode(file_get_contents('https://v2.jinrishici.com/one.json'), true);                  //今日诗词api,不带token版本
 
     $tangshi_title = $tangshi_pailie['data']['origin']['title'];              //标题
     $tangshi_dynasty = $tangshi_pailie['data']['origin']['dynasty'];          //朝代
     $tangshi_author = $tangshi_pailie['data']['origin']['author'];            //诗人
-
+    
     $tangshi_line_numbers = count($tangshi_pailie['data']['origin']['content']);
-    $tangshi_content = $tangshi_pailie['data']['origin']['content'][0];
-    for ($i=1; $i < $tangshi_line_numbers; $i++) {
-      $tangshi_temp_line = $tangshi_pailie['data']['origin']['content'][$i];
-        $tangshi_content = $tangshi_content."\n".$tangshi_temp_line;
+    $tangshi_content = $tangshi_pailie['data']['origin']['content'][0];  
+    for ($i=1; $i < $tangshi_line_numbers; $i++) { 
+      $tangshi_temp_line = $tangshi_pailie['data']['origin']['content'][$i];  
+        $tangshi_content = $tangshi_content."\n".$tangshi_temp_line;      
     }                                 //拼接全诗
 
     $post_Poem = "《".$tangshi_title."》"."\n".$tangshi_dynasty."·".$tangshi_author."\n"."\n".$tangshi_content;
-
+  
     return "$post_Poem";
-}
-
+}  
+    
     include './wbcookie.php';
     $cookie = $config['cookie'];
 
@@ -145,7 +145,7 @@ function jinrishici(){
     'location' => 'v6_content_home',
     'text' => "#诗词[超话]# #中华好诗词# #中国诗词大会#"."\n".$tangshi."\n"."\n",//需要发送微博的内容
     'pic_id' =>  "$bing_img_pid",
-    // '007CcEyfly1g042kquhztj31ns0u0tdu',//微博图片id，需事先上传好
+    // '007CcEyfly1g042kquhztj31ns0u0tdu',//微博图片id，需事先上传好 
     'isReEdit' => false,
     'pub_source' => 'page_2',
     'topic_id' => '1022%3A',
@@ -160,3 +160,4 @@ function jinrishici(){
 
 
     echo "$response\n发送成功";
+    

@@ -126,38 +126,38 @@ function jinrishici(){
   
     return "$post_Poem";
 }  
-    
-    include './wbcookie.php';
-    $cookie = $config['cookie'];
 
-    //通过必应首页图片api获取图片，并转存微博图床
-    $bing_img = json_decode(upload('https://www.yuluoge.com/api/index.php?cid=5', $cookie, false),true);
-    $bing_img_pid = $bing_img['data']['pics']['pic_1']['pid'];
+include './wbcookie.php';
+$cookie = $config['cookie'];
 
-    echo "$bing_img_pid\n";
+//通过必应首页图片api获取图片，并转存微博图床
+$bing_img = json_decode(upload('https://www.yuluoge.com/api/index.php?cid=5', $cookie, false),true);
+$bing_img_pid = $bing_img['data']['pics']['pic_1']['pid'];
 
-    $tangshi = jinrishici();
+echo "$bing_img_pid\n";
 
-    echo "$tangshi\n";
+$tangshi = jinrishici();
 
-    $post=[
-    'title' =>'今日要说什么？',
-    'location' => 'v6_content_home',
-    'text' => "#诗词[超话]# #中华好诗词# #中国诗词大会#"."\n".$tangshi."\n"."\n",//需要发送微博的内容
-    'pic_id' =>  "$bing_img_pid",
-    // '007CcEyfly1g042kquhztj31ns0u0tdu',//微博图片id，需事先上传好 
-    'isReEdit' => false,
-    'pub_source' => 'page_2',
-    'topic_id' => '1022%3A',
-    'pub_type' => 'dialog',
-    '_t' => 0,
-    'style_type' => 1,
-    ];
-    $url='https://weibo.com/aj/mblog/add?ajwvr=6&__rnd=2918942797035';//不需要改变
-    $referer='https://weibo.com/liufengshishe/home?topnav=1&wvr=6';//你的微博用户名(首页链接)
+echo "$tangshi\n";
 
-    $response = curl($url,$post,'',$cookie,$referer);
+$post=[
+'title' =>'今日要说什么？',
+'location' => 'v6_content_home',
+'text' => "#诗词[超话]# #中华好诗词# #中国诗词大会#"."\n".$tangshi."\n"."\n",//需要发送微博的内容
+'pic_id' =>  "$bing_img_pid",
+// '007CcEyfly1g042kquhztj31ns0u0tdu',//微博图片id，需事先上传好 
+'isReEdit' => false,
+'pub_source' => 'page_2',
+'topic_id' => '1022%3A',
+'pub_type' => 'dialog',
+'_t' => 0,
+'style_type' => 1,
+];
+$url='https://weibo.com/aj/mblog/add?ajwvr=6&__rnd=2918942797035';//不需要改变
+$referer='https://weibo.com/liufengshishe/home?topnav=1&wvr=6';//你的微博用户名(首页链接)
+
+$response = curl($url,$post,'',$cookie,$referer);
 
 
-    echo "$response\n发送成功";
+echo "$response\n发送成功";
     
